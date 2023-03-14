@@ -1,0 +1,10 @@
+var x = 1 + 2;
+/* fdhasfad
+fjdsalfja
+fjdas
+*/
+let x = 2;
+/* djasf */
+while x > 0 {
+    x++;
+}
