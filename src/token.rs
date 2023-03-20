@@ -52,10 +52,10 @@ pub enum TokenType {
 #[derive(Debug)]
 #[allow(unused)]
 pub struct Token {
-    token_type: TokenType,
-    lexeme: String,
+    pub token_type: TokenType,
+    pub lexeme: String,
     // which line this token in
-    line: u32,
+    pub line: u32,
 }
 
 impl Token {
