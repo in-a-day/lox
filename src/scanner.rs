@@ -1,6 +1,6 @@
 use crate::{
     runner,
-    token::{Token, TokenType},
+    token::{Token, TokenType, LiteralValue},
 };
 use once_cell::sync::Lazy;
 use std::collections::HashMap;
@@ -168,7 +168,7 @@ impl Scanner {
             .unwrap()
             .parse::<f64>()
             .unwrap();
-        self.add_token(TokenType::Number(v));
+        self.add_token_with_literal(TokenType::Number, Some(LiteralValue::Nubmer(v)));
     }
 
     fn string(&mut self) {
@@ -189,7 +189,7 @@ impl Scanner {
             .get((self.start as usize + 1)..(self.current as usize - 1))
             .unwrap()
             .to_owned();
-        self.add_token(TokenType::String(v));
+        self.add_token_with_literal(TokenType::String, Some(LiteralValue::String(v)));
     }
 
     fn identifier(&mut self) {
@@ -222,11 +222,15 @@ impl Scanner {
     }
 
     fn add_token(&mut self, token_type: TokenType) {
+        self.add_token_with_literal(token_type, None);
+    }
+
+    fn add_token_with_literal(&mut self, token_type: TokenType, literal: Option<LiteralValue>) {
         let lexeme = self
             .source
             .get((self.start as usize)..(self.current as usize))
             .unwrap()
             .to_owned();
-        self.tokens.push(Token::new(token_type, lexeme, self.line));
+        self.tokens.push(Token::new(token_type, lexeme, literal, self.line));
     }
 }

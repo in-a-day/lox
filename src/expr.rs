@@ -1,12 +1,6 @@
 #![allow(dead_code)]
-use crate::token::Token;
+use crate::token::{LiteralValue, Token};
 
-pub enum LiteralValue {
-    String(String),
-    Nubmer(f64),
-    Bool(bool),
-    Nil,
-}
 pub trait Visitor<R> {
     fn visit(&self, expr: &Expr) -> R;
 }

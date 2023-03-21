@@ -72,14 +72,8 @@ fn gen(path: &str) {
 
 #[allow(dead_code)]
 fn gen_base(writer: &mut impl Write) -> std::io::Result<()> {
-    writeln!(writer, "use crate::token::Token;")?;
+    writeln!(writer, "use crate::token::{{Token, LiteralValue}};")?;
     writeln!(writer)?;
-    writeln!(writer, "pub enum LiteralValue {{")?;
-    writeln!(writer, "    String(String),")?;
-    writeln!(writer, "    Nubmer(f64),")?;
-    writeln!(writer, "    Bool(bool),")?;
-    writeln!(writer, "    Nil,")?;
-    writeln!(writer, "}}")?;
     Ok(())
 }
 

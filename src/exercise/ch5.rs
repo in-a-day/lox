@@ -1,9 +1,9 @@
 #![allow(unused_imports)]
 use crate::{
     expr::{
-        BinaryExpr, Expr, ExprVisitor, GroupingExpr, LiteralExpr, LiteralValue, UnaryExpr, Visitor,
+        BinaryExpr, Expr, ExprVisitor, GroupingExpr, LiteralExpr, UnaryExpr, Visitor,
     },
-    token::{Token, TokenType},
+    token::{Token, TokenType, LiteralValue},
 };
 
 struct PrintVisitor;
@@ -68,13 +68,13 @@ fn print_visitor_test() {
     let b = Expr::Binary(Box::new(BinaryExpr {
         left: one,
         right: two,
-        operator: Token::new(TokenType::Plus, "+".to_owned(), 1),
+        operator: Token::new_not_literal(TokenType::Plus, "+".to_owned(), 1),
     }));
     // (1 + 2)
     let g = Expr::Grouping(Box::new(GroupingExpr { expression: b }));
     // - (1 + 2)
     let u = Expr::Unary(Box::new(UnaryExpr {
-        operator: Token::new(TokenType::Minus, "-".to_owned(), 1),
+        operator: Token::new_not_literal(TokenType::Minus, "-".to_owned(), 1),
         right: g,
     }));
 
@@ -104,7 +104,7 @@ fn rpn_test() {
         expression: Expr::Binary(Box::new(BinaryExpr {
             left: one,
             right: two,
-            operator: Token::new(TokenType::Plus, "+".to_owned(), 1),
+            operator: Token::new_not_literal(TokenType::Plus, "+".to_owned(), 1),
         })),
     }));
     // (4 - 3)
@@ -112,14 +112,14 @@ fn rpn_test() {
         expression: Expr::Binary(Box::new(BinaryExpr {
             left: four,
             right: three,
-            operator: Token::new(TokenType::Plus, "-".to_owned(), 1),
+            operator: Token::new_not_literal(TokenType::Plus, "-".to_owned(), 1),
         })),
     }));
     // (1 + 2) * (4 - 3)
     let c = Expr::Binary(Box::new(BinaryExpr {
         left: a,
         right: b,
-        operator: Token::new(TokenType::Star, "*".to_owned(), 1),
+        operator: Token::new_not_literal(TokenType::Star, "*".to_owned(), 1),
     }));
 
     println!("{}", c.visit(&RpnVisitor));
