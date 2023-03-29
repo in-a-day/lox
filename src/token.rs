@@ -49,7 +49,7 @@ pub enum TokenType {
     Eof,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum LiteralValue {
     String(String),
     Nubmer(f64),
@@ -57,7 +57,7 @@ pub enum LiteralValue {
     Nil,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 #[allow(unused)]
 pub struct Token {
     pub token_type: TokenType,
