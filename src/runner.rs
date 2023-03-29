@@ -3,11 +3,24 @@ use std::{
     io::{stdin, stdout, Write},
 };
 
-use crate::scanner::Scanner;
+use crate::{
+    exercise::ch5::AstVisitor,
+    parser::Parser,
+    scanner::Scanner,
+    token::{Token, TokenType},
+};
 static mut HAS_ERR: bool = false;
 
 pub fn error(line: u32, message: &str) {
     report(line, "", message);
+}
+
+pub fn error_token(token: &Token, message: &str) {
+    if token.token_type == TokenType::Eof {
+        report(token.line, " at end", message);
+    } else {
+        report(token.line, &format!(" at '{}'", token.lexeme), message)
+    }
 }
 
 fn report(line: u32, position: &str, message: &str) {
@@ -39,7 +52,14 @@ pub fn run_prompt() {
 fn run(source: &str) {
     let scanner = Scanner::new(source.to_owned());
     let tokens = scanner.scan();
-    for token in tokens {
-        println!("{:?}", token);
+    let mut parser = Parser::new(tokens);
+    let expr = parser.parse();
+    if !unsafe { HAS_ERR } && expr.is_some() {
+        println!("{}", expr.unwrap().visit(&AstVisitor));
     }
+}
+
+#[test]
+fn run_it() {
+    run_prompt();
 }
