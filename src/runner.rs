@@ -58,8 +58,3 @@ fn run(source: &str) {
         println!("{}", expr.unwrap().visit(&AstVisitor));
     }
 }
-
-#[test]
-fn run_it() {
-    run_prompt();
-}

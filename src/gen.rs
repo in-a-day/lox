@@ -134,8 +134,3 @@ fn gen_types(writer: &mut impl Write, base_name: &str, types: &Vec<Type>) -> std
 
     Ok(())
 }
-
-#[test]
-fn gen_test() {
-    gen("./hh.rs");
-}

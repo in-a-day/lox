@@ -1,6 +1,3 @@
-// TODO: parser
-// define parser register code
-
 use crate::{
     expr::{BinaryExpr, Expr, GroupingExpr, LiteralExpr, UnaryExpr},
     token::{Token, TokenType}, runner,
@@ -27,7 +24,6 @@ impl Parser {
     }
 
     pub fn parse(&mut self) -> Option<Expr> {
-        // TODO: do something on fail
         self.expression().ok()
     }
 
@@ -195,27 +191,5 @@ impl Parser {
 
     fn is_at_end(&self) -> bool {
         self.current >= self.tokens.len()
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn compare_enum_ref() {
-        let x = TokenType::GreaterEqual;
-        let y = TokenType::GreaterEqual;
-        assert_eq!(&x, &y);
-    }
-
-    #[test]
-    fn match_return_break_loop() {
-        loop {
-            match 1 {
-                1 => return,
-                _ => (),
-            }
-        }
     }
 }
