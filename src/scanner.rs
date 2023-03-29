@@ -202,7 +202,13 @@ impl Scanner {
             .get((self.start as usize)..(self.current as usize))
             .unwrap();
         let token_type = KEYWORDS.get(v).unwrap_or(&TokenType::Identifier).clone();
-        self.add_token(token_type);
+        // add literal
+        match token_type {
+            TokenType::Nil => self.add_token_with_literal(token_type, Some(LiteralValue::Nil)),
+            TokenType::True => self.add_token_with_literal(token_type, Some(LiteralValue::Bool(true))),
+            TokenType::False => self.add_token_with_literal(token_type, Some(LiteralValue::Bool(false))),
+            _ => self.add_token(token_type),
+        }
     }
 
     fn block_comment(&mut self) {
