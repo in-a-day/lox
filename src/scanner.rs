@@ -114,6 +114,7 @@ impl Scanner {
             }
         }
 
+        self.add_token(TokenType::Eof);
         self.tokens
     }
 
