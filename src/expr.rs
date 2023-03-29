@@ -23,6 +23,7 @@ where
         }
     }
 }
+#[derive(Debug)]
 pub enum Expr {
     Literal(Box<LiteralExpr>),
     Unary(Box<UnaryExpr>),
@@ -34,18 +35,22 @@ impl Expr {
         visitor.visit(self)
     }
 }
+#[derive(Debug)]
 pub struct LiteralExpr {
     pub value: LiteralValue,
 }
+#[derive(Debug)]
 pub struct UnaryExpr {
     pub operator: Token,
     pub right: Expr,
 }
+#[derive(Debug)]
 pub struct BinaryExpr {
     pub left: Expr,
     pub right: Expr,
     pub operator: Token,
 }
+#[derive(Debug)]
 pub struct GroupingExpr {
     pub expression: Expr,
 }

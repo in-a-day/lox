@@ -110,6 +110,7 @@ fn gen_visitor(writer: &mut impl Write, base_name: &str, types: &Vec<Type>) -> s
 #[allow(dead_code)]
 fn gen_types(writer: &mut impl Write, base_name: &str, types: &Vec<Type>) -> std::io::Result<()> {
     // enum
+    writeln!(writer, "#[derive(Debug)]")?;
     writeln!(writer, "pub enum Expr {{")?;
     for tp in types {
         writeln!(writer, "    {}(Box({})),", tp.name, tp.name.clone() + base_name)?;
@@ -123,6 +124,7 @@ fn gen_types(writer: &mut impl Write, base_name: &str, types: &Vec<Type>) -> std
 
     // struct
     for tp in types {
+        writeln!(writer, "#[derive(Debug)]")?;
         writeln!(writer, "pub struct {} {{", tp.name.to_owned() + base_name)?;
         for field in &tp.fields {
             writeln!(writer, "    {},", field)?;
