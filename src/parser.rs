@@ -1,15 +1,13 @@
 use crate::{
     expr::{BinaryExpr, Expr, GroupingExpr, LiteralExpr, UnaryExpr},
-    token::{Token, TokenType}, runner,
+    runner,
+    token::{Token, TokenType},
 };
 
 type Result<T> = std::result::Result<T, ParseErr>;
 
 pub enum ParseErr {
-    TokenErr {
-        token: Token,
-        message: &'static str,
-    },
+    TokenErr { token: Token, message: &'static str },
     FooErr,
 }
 
@@ -131,7 +129,10 @@ impl Parser {
 
     fn error(&self, token: &Token, message: &'static str) -> ParseErr {
         runner::error_token(token, message);
-        ParseErr::TokenErr { token: token.clone(), message }
+        ParseErr::TokenErr {
+            token: token.clone(),
+            message,
+        }
     }
 
     fn is_match(&mut self, token_types: &[TokenType]) -> bool {
@@ -174,6 +175,10 @@ impl Parser {
         }
     }
 
+    fn is_at_end(&self) -> bool {
+        self.current >= self.tokens.len()
+    }
+
     fn peek(&self) -> &Token {
         &self.tokens[self.current]
     }
@@ -187,9 +192,5 @@ impl Parser {
 
     fn previous(&self) -> &Token {
         &self.tokens[self.current - 1]
-    }
-
-    fn is_at_end(&self) -> bool {
-        self.current >= self.tokens.len()
     }
 }
