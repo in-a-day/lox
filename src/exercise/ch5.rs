@@ -6,7 +6,7 @@ use crate::{
     token::{Token, TokenType, LiteralValue},
 };
 
-struct PrintVisitor;
+pub struct PrintVisitor;
 impl ExprVisitor<String> for PrintVisitor {
     fn visit_literal(&self, expr: &LiteralExpr) -> String {
         (match &expr.value {
@@ -30,7 +30,47 @@ impl ExprVisitor<String> for PrintVisitor {
     }
 }
 
-struct RpnVisitor;
+pub struct AstVisitor;
+impl ExprVisitor<String> for AstVisitor {
+    fn visit_literal(&self, expr: &LiteralExpr) -> String {
+        match &expr.value {
+            LiteralValue::Nil => "nil".to_string(),
+            LiteralValue::Bool(v) => v.to_string(),
+            LiteralValue::Nubmer(v) => v.to_string(),
+            LiteralValue::String(v) => v.to_string(),
+        }
+    }
+
+    fn visit_unary(&self, expr: &UnaryExpr) -> String {
+        self.parenthesize(&expr.operator.lexeme, &[&expr.right])
+    }
+
+    fn visit_binary(&self, expr: &BinaryExpr) -> String {
+        self.parenthesize(&expr.operator.lexeme, &[&expr.left, &expr.right])
+    }
+
+    fn visit_grouping(&self, expr: &GroupingExpr) -> String {
+        self.parenthesize("Group", &[&expr.expression])
+    }
+}
+
+impl AstVisitor {
+    #[allow(dead_code)]
+    fn parenthesize(&self, lexeme: &str, exprs: &[&Expr]) -> String {
+        let mut res = String::new();
+        res.push('(');
+        res.push_str(lexeme);
+        for expr in exprs {
+            res.push(' ');
+            res.push_str(&expr.visit(self));
+        }
+        res.push(')');
+
+        res
+    }
+}
+
+pub struct RpnVisitor;
 impl ExprVisitor<String> for RpnVisitor {
     fn visit_literal(&self, expr: &LiteralExpr) -> String {
         (match &expr.value {
